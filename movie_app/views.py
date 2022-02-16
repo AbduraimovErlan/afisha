@@ -40,7 +40,6 @@ def movie_detail_view(request, id):
     data = MovieSerializer(movie).data
     return Response(data=data)
 
-Review
 
 @api_view(["GET"])
 def review_list_view(request):

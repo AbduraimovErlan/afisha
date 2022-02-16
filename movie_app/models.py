@@ -8,6 +8,12 @@ class Director(models.Model):
         return self.name
 
 
+    # @property
+    # def count_movies(self):
+    #     return self.movies.all().count()
+
+
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
@@ -20,8 +26,20 @@ class Movie(models.Model):
 
 
 class Review(models.Model):
+    STARS_CHOICE = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    )
     text = models.TextField()
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movies = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True)
+    stars = models.CharField(choices=STARS_CHOICE, max_length=100, null=True)
+
+
+
+
 
 
 

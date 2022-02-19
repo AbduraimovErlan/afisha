@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 
 class Director(models.Model):
@@ -7,12 +8,9 @@ class Director(models.Model):
     def __str__(self):
         return self.name
 
-
     @property
     def count_movies_d(self):
         return self.movie_d.all().count()
-
-
 
 
 class Movie(models.Model):
@@ -23,6 +21,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    def rating(self):
+        return Review.objects.filter(movies=self).aggregate(Avg('stars'))
 
 
 
@@ -36,17 +37,8 @@ class Review(models.Model):
     )
     text = models.TextField()
     movies = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True, related_name='movies_s')
-    stars = models.CharField(choices=STARS_CHOICE, max_length=100, null=True)
+    stars = models.IntegerField(choices=STARS_CHOICE, null=True)
 
-    # @property
-    # def rating(self):
-    #     # movies = self.stars.objects.all()
-    #     return self.stars
-
-
-    @property
-    def rating(self):
-        return self.stars
 
 
 

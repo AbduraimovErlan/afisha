@@ -2,9 +2,13 @@ from django.shortcuts import render
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from movie_app.serializers import DirectorSerializer, MovieSerializer, ReviewSerializer
+from movie_app.serializers import DirectorSerializer, MovieSerializer, ReviewSerializer, MovieCreateUpdateSerializer, \
+    DirectorCreateUpdateSerializer, ReviewCreateUpdateSerializer
 from movie_app.models import *
 from rest_framework import status
+
+
+
 
 @api_view(["GET", "POST"])
 def director_list_view(request):
@@ -13,7 +17,9 @@ def director_list_view(request):
         data = DirectorSerializer(directors, many=True).data
         return Response(data=data)
     elif request.method == "POST":
-        print(request.data)
+        selializer = DirectorCreateUpdateSerializer(data=request.data)
+        if not selializer.is_valid():
+            return Response(data={'errors': selializer.errors}, status=status.HTTP_406_NOT_ACCEPTABLE)
         name = request.data.get('name')
         director = Director.objects.create(name=name)
         return Response(data=DirectorSerializer(director).data, status=status.HTTP_201_CREATED)
@@ -38,6 +44,7 @@ def director_detail_view(request, id):
 
 
 
+
 @api_view(["GET", "POST"])
 def movie_list_view(request):
     if request.method == "GET":
@@ -45,7 +52,10 @@ def movie_list_view(request):
         data = MovieSerializer(movies, many=True).data
         return Response(data=data)
     elif request.method == "POST":
-        print(request.data)
+        selializer = MovieCreateUpdateSerializer(data=request.data)
+        if not selializer.is_valid():
+            return Response(data={'errors': selializer.errors}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         title = request.data.get('title')
         description = request.data.get('description')
         director_id = request.data.get('director_id')
@@ -76,6 +86,7 @@ def movie_detail_view(request, id):
 
 
 
+
 @api_view(["GET", "POST"])
 def review_list_view(request):
     if request.method == "GET":
@@ -83,7 +94,9 @@ def review_list_view(request):
         data = ReviewSerializer(reviews, many=True).data
         return Response(data=data)
     elif request.method == "POST":
-        print(request.data)
+        selializer = ReviewCreateUpdateSerializer(data=request.data)
+        if not selializer.is_valid():
+            return Response(data={'errors': selializer.errors}, status=status.HTTP_406_NOT_ACCEPTABLE)
         text = request.data.get('text')
         stars = request.data.get('stars')
         movies_id = request.data.get('movies_id')

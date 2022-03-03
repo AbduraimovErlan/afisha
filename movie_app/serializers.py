@@ -1,6 +1,33 @@
-from rest_framework import serializers
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import serializers, request
 from movie_app.models import Director, Movie, Review
 from rest_framework.exceptions import ValidationError
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
+
+
+class UserCreateSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate_username(self, username):
+        if User.objects.filter(username=username):
+            raise ValidationError('User with this username already exists!')
+        return username
+
+# class UserAuthenticateSerializer(serializers.Serializer):
+#         username = serializers.CharField()
+#         password = serializers.CharField()
+#         def validate_username_password(self, username, password):
+#             if User.objects.authenticate(username=username, password=password):
+#                 raise ValidationError('User not found')
+#             return username
+
+
 
 
 

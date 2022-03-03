@@ -13,20 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import djoser
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from movie_app import views
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/directors/', views.director_list_view),
-    path('api/v1/directors/<int:id>/', views.director_detail_view),
-    path('api/v1/movies/', views.movie_list_view),
-    path('api/v1/movies/<int:id>/', views.movie_detail_view),
-    path('api/v1/reviews/', views.review_list_view),
-    path('api/v1/reviews/<int:id>/', views.review_detail_view),
-    path('api/v1/registration/', views.registration),
-    path('api/v1/login/', views.authorization),
+    path('api/v1/directors/', views.DirectorListCreateAPIView.as_view()),
+    path('api/v1/directors/<int:id>/', views.DirectorUpdateDeleteAPIView.as_view()),
+    path('api/v1/movies/', views.MovieListCreateAPIView.as_view()),
+    path('api/v1/movies/<int:id>/', views.MovieUpdateDeleteAPIView.as_view()),
+    path('api/v1/reviews/', views.ReviewListCreateAPIView.as_view()),
+    path('api/v1/reviews/<int:id>/', views.ReviewUpdateDeleteAPIView.as_view()),
+    path('api/v1/registration/', views.RegisterAPIView.as_view()),
+    path('api/v1/login/', views.AuthorizationAPIView.as_view()),
 
 ]
 

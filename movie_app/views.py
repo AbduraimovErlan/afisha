@@ -99,7 +99,7 @@ class RegisterAPIView(GenericAPIView):
 #
 #     def get(self, request, format=None):
 #         return Response({'detail': "I suppose you are authenticated"})
-#
+
 
 
 class AuthorizationAPIView(GenericAPIView):
